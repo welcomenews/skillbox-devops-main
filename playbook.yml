@@ -1,6 +1,6 @@
 ---
 - name: Install programs
-  hosts: host1
+  hosts: all
   become: yes
   remote_user: root
   gather_facts: yes
