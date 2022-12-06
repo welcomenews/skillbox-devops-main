@@ -1,0 +1,11 @@
+---
+- name: Install programs
+  hosts: host1
+  become: yes
+  remote_user: root
+  gather_facts: yes
+
+  roles:
+    - infra
+    - service
+  #   default_container_name: "ubuntu"
