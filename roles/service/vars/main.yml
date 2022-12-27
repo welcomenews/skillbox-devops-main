@@ -1,3 +1,4 @@
 default_container_name: "ubuntu"
-default_container_image: "ubuntu:20.04"
+default_container_image: "nginx"
+default_container_image_1: "ubuntu:20.04"
 default_container_command: "sleep 1"
