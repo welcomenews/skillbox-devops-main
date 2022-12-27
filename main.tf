@@ -148,5 +148,5 @@ resource "yandex_lb_network_load_balancer" "lb-skillbox" {
 }
 
 output "lb_ip_address" {
-  value = yandex_lb_network_load_balancer.lb-skillbox.*
+  value = yandex_lb_network_load_balancer.lb-skillbox.*.external_address_spec[0].*.address
 }
