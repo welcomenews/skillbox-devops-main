@@ -1,6 +1,6 @@
-# skillbox-devops-main
+## skillbox-devops-main
 
-
+```
 # Устанавливаем Terraform
 
 # Запуск
@@ -9,7 +9,7 @@
 
 
 # ansible-playbook -i hosts playbook.yml
-
+```
 
 ========================================
 
