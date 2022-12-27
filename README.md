@@ -1,7 +1,17 @@
 # skillbox-devops-main
 
 
+# Устанавливаем Terraform
 
+# Запуск
+# terraform init
+# terraform apply
+
+
+# ansible-playbook -i hosts playbook.yml
+
+
+========================================
 
 
 https://habr.com/ru/post/683844/
