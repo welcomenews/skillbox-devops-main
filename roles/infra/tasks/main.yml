@@ -21,6 +21,8 @@
   apt_repository:
     repo: deb https://download.docker.com/linux/ubuntu focal stable
     state: present
+    enabled: yes
+    gpgcheck: no
 
 - name: Update apt and install docker-ce
   apt:
