@@ -11,5 +11,5 @@
     #    command: "{{ default_container_command }}"
     state: started
     published_ports:
-      - 80:80
+      - "{{ ports }}"
 ##    with_sequence: count={{ container_count }}  
