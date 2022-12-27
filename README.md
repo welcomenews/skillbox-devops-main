@@ -3,6 +3,20 @@
 ```
 # Устанавливаем Terraform
 
+# Откройте файл конфигурации Terraform CLI:
+vim ~/.terraformrc
+
+provider_installation {
+  network_mirror {
+    url = "https://terraform-mirror.yandexcloud.net/"
+    include = ["registry.terraform.io/*/*"]
+  }
+  direct {
+    exclude = ["registry.terraform.io/*/*"]
+  }
+}
+
+
 # Запуск
 # terraform init
 # terraform apply
