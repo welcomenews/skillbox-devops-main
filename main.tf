@@ -100,17 +100,6 @@ resource "yandex_dns_recordset" "rs1" {
 ## data = [yandex_vpc_address.addr.external_ipv4_address[0].address]  
 }
 
-
-# Выведем IP адресa сервера
-output "internal_ip_address_vm_1" {
-  value = yandex_compute_instance.vm-1.network_interface.0.ip_address
-}
-
-output "external_ip_address_vm_1" {
-  value = yandex_compute_instance.vm-1.network_interface.0.nat_ip_address
-}
-
-
 ## target_group
 resource "yandex_lb_target_group" "tg-skillbox" {
   name      = "my-tg"
@@ -147,6 +136,3 @@ resource "yandex_lb_network_load_balancer" "lb-skillbox" {
   }
 }
 
-output "lb_ip_address" {
-  value = yandex_lb_network_load_balancer.lb-skillbox.*.external_address_spec[0].*.address
-}
