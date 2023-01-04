@@ -22,9 +22,9 @@ resource "yandex_vpc_network" "internal" {
   name = "internal-2"
 }
 
-resource "yandex_vpc_subnet" "internal-c" {
-  name           = "internal-c"
-  zone           = "ru-central1-c"
+resource "yandex_vpc_subnet" "internal-b" {
+  name           = "internal-b"
+  zone           = "ru-central1-b"
   network_id     = yandex_vpc_network.internal.id
   v4_cidr_blocks = ["192.168.10.0/24"]
 }
@@ -49,14 +49,21 @@ resource "yandex_compute_instance" "vm-1" {
       size     = 15
     }
   }
+  provisioner "local-exec" {
+    command = <<EOT
+        echo [servers] >> hosts.txt;
+        echo vm-1 ansible_host=${yandex_compute_instance.vm-1.network_interface.0.nat_ip_address} >> hosts.txt
+    EOT
+  }
+ 
 
-## Делает машину прирываемой.
+## Делает машину не прирываемой.
   scheduling_policy {
-    preemptible = true
+    preemptible = false 
   }
 
   network_interface {
-    subnet_id = yandex_vpc_subnet.internal-c.id
+    subnet_id = yandex_vpc_subnet.internal-b.id
     nat       = true
   }
 
@@ -65,23 +72,6 @@ resource "yandex_compute_instance" "vm-1" {
   }
 }
 
-## Create DNS zone
-resource "yandex_dns_zone" "zone1" {
-  name        = "my-public-zone"
-  description = "desc"
-  zone             = "welcomenews.tk."
-  public           = true
-}
-
-## Создание DNS записи
-resource "yandex_dns_recordset" "rs1" {
-  zone_id = yandex_dns_zone.zone1.id
-  name    = "test.welcomenews.tk."
-  type    = "A"
-  ttl     = 200
-  data    = [yandex_compute_instance.vm-1.network_interface.0.nat_ip_address]
-## data = [yandex_vpc_address.addr.external_ipv4_address[0].address]  
-}
 
 ## target_group
 resource "yandex_lb_target_group" "tg-skillbox" {
@@ -89,7 +79,7 @@ resource "yandex_lb_target_group" "tg-skillbox" {
   region_id = "ru-central1"
 
   target {
-    subnet_id = yandex_vpc_subnet.internal-c.id
+    subnet_id = yandex_vpc_subnet.internal-b.id
     address   = yandex_compute_instance.vm-1.network_interface.0.ip_address
   }
 }
@@ -117,5 +107,33 @@ resource "yandex_lb_network_load_balancer" "lb-skillbox" {
       }
     }
   }
+}
+## Create DNS zone
+resource "yandex_dns_zone" "zone1" {
+  name        = "my-public-zone"
+  description = "desc"
+  zone        = "welcomenews.tk."
+  public      = true
+}
+
+### Создание DNS записи
+resource "yandex_dns_recordset" "rs1" {
+  zone_id = yandex_dns_zone.zone1.id
+  name    = "test.welcomenews.tk."
+  type    = "A"
+  ttl     = 200
+  data  = [yandex_compute_instance.vm-1.network_interface.0.nat_ip_address]
+}
+
+resource "null_resource" "start_ansible" {
+  
+  provisioner "local-exec" {
+    command = "sleep 15"
+  }
+
+#  provisioner "local-exec" {
+#    command = "ansible-playbook -i hosts.txt -u ubuntu ansible/playbook.yml"
+#  }
+#  depends_on = [yandex_lb_network_load_balancer.lb-skillbox]
 }
 

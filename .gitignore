@@ -1,1 +1,7 @@
 variables.tf
+hosts.txt
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.backup
+.terraform
+hosts

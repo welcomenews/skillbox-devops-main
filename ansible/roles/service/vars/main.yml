@@ -1,5 +1,0 @@
-default_container_name: "nginx"
-default_container_image: "nginx"
-default_container_image_1: "ubuntu:20.04"
-default_container_command: "sleep 1"
-ports: "80:80"

@@ -1,0 +1,14 @@
+[Unit]
+Description=Skillbox Web Service
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=/usr/bin/docker pull wordpress
+ExecStart=/usr/bin/docker run --name my-wordpress -p 80:80 -d wordpress
+TimeoutSec=35
+
+[Install]
+WantedBy=multi-user.target
