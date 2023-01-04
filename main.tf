@@ -131,9 +131,9 @@ resource "null_resource" "start_ansible" {
     command = "sleep 15"
   }
 
-#  provisioner "local-exec" {
-#    command = "ansible-playbook -i hosts.txt -u ubuntu ansible/playbook.yml"
-#  }
-#  depends_on = [yandex_lb_network_load_balancer.lb-skillbox]
+  provisioner "local-exec" {
+    command = "ansible-playbook -i hosts.txt -u ubuntu ansible/playbook.yml"
+  }
+  depends_on = [yandex_lb_network_load_balancer.lb-skillbox]
 }
 
