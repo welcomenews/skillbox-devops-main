@@ -22,7 +22,6 @@ provider_installation {
 # terraform apply
 
 
-# ansible-playbook -i hosts playbook.yml
 ```
 
 ========================================
